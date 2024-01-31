@@ -1,0 +1,26 @@
+.loginContainer {
+  background-image: url("../../assets/background.png");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.loginCard {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.textInput{
+background-color: #fff;
+border:.5px solid rgba(158, 158, 158, 0.5);
+}
+
+.loginBtn{
+background-color: black;
+}
+
+.transparent{
+background-color: rgba(255,255,255,.6);
+}
