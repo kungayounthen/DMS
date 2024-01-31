@@ -1,5 +1,5 @@
-import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, styled } from '@mui/material'
-import { useContext, useState } from 'react'
+import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, styled } from '@mui/material'
+import { useContext, useEffect, useState } from 'react'
 import { InputBase } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { FileContext } from '../../context/fileContext';
@@ -7,6 +7,7 @@ import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import VideocamIcon from '@mui/icons-material/Videocam';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import { CreadentialsContext } from '../../context/credential';
+import { useNavigate } from 'react-router-dom';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -53,13 +54,28 @@ const selectIcon = (icon) => {
     }
 }
 function SearchFilePage() {
+    const navigate=useNavigate();
     const [category, setCategory] = useState('');
     const[docType,setDocType]=useState('');
     const { saveFile } = useContext(FileContext);
     const{name}=useContext(CreadentialsContext);
+    const[row,setRow]=useState([]);
+    useEffect(()=>{
+    getData();
+    },[])
+    const getData=async()=>{
+    try{
+    const dataResponse=await fetch('https://dms-lq4d.onrender.com/view_demo');
+    const data=await dataResponse.json();
+    setRow(data.data);
+    console.log('Row',row);
+    }catch(e){
+    alert('something went wrong');
+    }
+    }
+    
     const columns = ['Type', 'Doc. Name', 'Doc. No.', 'Upload Date','Owner'];
     const rows = saveFile;
-    console.log(rows.length);
     return (
         <Box className='flex flex-1'>
             <Box className='w-[90%] mx-auto h-[80%] self-center pb-2'>
@@ -96,6 +112,7 @@ function SearchFilePage() {
                             />
                         </Search>
                     </Box>
+                    <Button  onClick={()=>{navigate('/letsgo')}} variant="contained">Add File</Button>
                 </Box>
                     <TableContainer  className='mt-5 rounded-md h-full bg-white  overflow-y-scroll'>
                         <Table stickyHeader aria-label="sticky table" className={rows.length > 0 ? 'h-auto' : 'h-full' }>
@@ -107,18 +124,21 @@ function SearchFilePage() {
                                 </TableRow>
                                 </TableHead>
                                 <TableBody className='h-full w-full'> 
-                                {rows.length>0 && rows.map((item, i) => (
+
+                                {row && row.length>0 && row.map((item, i) => (
                                     <TableRow key={i} sx={{display:'table-row',height:'50px',boxSizing:'border-box'}} className='box-border h-10'>
-                                    <TableCell className='w-10'>
-                                    <Box className='flex flex-col justify-center items-center'>{selectIcon(item.type)} <p>{item.type.split('/')[1]}</p></Box>
+                                    <TableCell align='center'>
+                                    {/*<Box className='flex flex-col justify-center items-center'>{selectIcon(item.type)} <p>{item.type.split('/')[1]}</p></Box>*/}
+                                    {item.type}
                                     </TableCell>
                                         <TableCell align='center'>{item.name}</TableCell>
-                                        <TableCell align='center'>{'#'+item.docNo}</TableCell>
-                                        <TableCell align='center'>{item.date.toLocaleDateString()}</TableCell>
+                                        <TableCell align='center'>{'#'+item.number}</TableCell>
+                                        {/*<TableCell align='center'>{item.date.toLocaleDateString()}</TableCell>*/}
+                                        <TableCell align='center'>{name}</TableCell>
                                         <TableCell align='center'>{name}</TableCell>
                                         </TableRow>
                                         ))}
-                                        {rows.length === 0 && <TableRow className='w-full h-full' sx={{border:'none'}}>
+                                        {(row.length === 0 || !row) && <TableRow className='w-full h-full' sx={{border:'none'}}>
                                             <TableCell colSpan={columns.length}>
                                                 <p className='text-center'>No rows</p>
                                             </TableCell>

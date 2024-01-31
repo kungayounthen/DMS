@@ -7,6 +7,7 @@ import SideDrawer from './components/SideDrawer.jsx';
 import UploadPage from './screens/UploadPage/UploadPage.jsx';
 import SearchFilePage from './screens/searchFilePage/SearchFilePage.jsx';
 import Main from './screens/Main/Main.jsx';
+import Practice from './screens/practice.jsx';
 function App() {
 
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route index element={<UploadPage/>}/>
         <Route path='search' element={<SearchFilePage/>}/>
         </Route>
+        <Route path='/letsgo' element={<Practice/>}/>
       </Route>
     </Routes>
   )
