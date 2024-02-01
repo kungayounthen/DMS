@@ -69,13 +69,17 @@ function SearchFilePage() {
     const data=await dataResponse.json();
     setRow(data.data);
     console.log('Row',row);
+    if(row.length===0)
+    {
+        return ;
+    }
     }catch(e){
     alert('something went wrong');
     }
     }
     
     const columns = ['Type', 'Doc. Name', 'Doc. No.', 'Upload Date','Owner'];
-    const rows = saveFile;
+    // const rows = saveFile;
     return (
         <Box className='flex flex-1'>
             <Box className='w-[90%] mx-auto h-[80%] self-center pb-2'>
@@ -115,7 +119,7 @@ function SearchFilePage() {
                     <Button  onClick={()=>{navigate('/letsgo')}} variant="contained">Add File</Button>
                 </Box>
                     <TableContainer  className='mt-5 rounded-md h-full bg-white  overflow-y-scroll'>
-                        <Table stickyHeader aria-label="sticky table" className={rows.length > 0 ? 'h-auto' : 'h-full' }>
+                        <Table stickyHeader aria-label="sticky table" className={row.length > 0 ? 'h-auto' : 'h-full' }>
                             <TableHead >
                                 <TableRow>
                                     {columns.map((item, i) => (

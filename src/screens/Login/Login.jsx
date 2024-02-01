@@ -53,7 +53,7 @@ function Login() {
         navigate('/upload')}}>Login</button>
       
 
-      <button className='flex mt-4 bg-white rounded-3xl w-4/5 py-2 items-center justify-center gap-2'><FacebookRoundedIcon color='primary'/><p>Continue with facebook</p></button>
+      <button className='flex mt-4 bg-white rounded-3xl w-4/5 py-2 items-center justify-center gap-2'><FacebookRoundedIcon color='primary'/><p className='text-black'>Continue with facebook</p></button>
 
       <Link className='underline underline-offset-1 mt-4 text-black' to='#'>Forget your password?</Link>
       </div>
