@@ -158,7 +158,8 @@ function SearchFilePage() {
                                 placeholder="Search…"
                                 inputProps={{ 'aria-label': 'search' }}
                                 className='h-12'
-                               
+                               value={searchTerm}
+                               onChange={(event)=>{setSearchTerm(event.target.value)}}
                             />
                         </Search>
                     </Box>
@@ -174,7 +175,9 @@ function SearchFilePage() {
                         </TableHead>
                         <TableBody className='h-full w-full'>
 
-                            {row && row.length > 0 && !isLoading && row.map((item, i) => (
+                            {row && row.length > 0 && !isLoading && row.filter((item)=>{
+                            return searchTerm.toLowerCase()===''?item: item.name.toLowerCase().includes(searchTerm);
+                            }).map((item, i) => (
                                 <TableRow key={i} sx={{ display: 'table-row', height: '50px', boxSizing: 'border-box' }} className='box-border h-10'>
                                     <TableCell align='center'>
                                         <Box className='flex flex-col justify-center items-center'>{selectIcon(item.type)} <p>{item.type}</p></Box>
