@@ -63,7 +63,8 @@ function SearchFilePage() {
     // const{name}=useContext(CreadentialsContext);
     const [row, setRow] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [searchTerm,setSearchTerm]=useState('');
+    const [searchTerm, setSearchTerm] = useState('');
+    const [selectedTypeRow,setSelectedTypeRow]=useState([]);
 
     useEffect(() => {
         getData();
@@ -92,18 +93,24 @@ function SearchFilePage() {
         setIsLoading(true);
         if (event.target.value === '') {
             setCategory(event.target.value);
+            setDocType('');
             getData();
             return;
         }
-        if(event.target.value===category)
-        {
-        return;
+        if (event.target.value === category) {
+            return;
         }
         try {
             setCategory(event.target.value);
-            const res = await fetch(`http://13.233.238.2:4000/view_demo?category=${event.target.value}`);
-            const filteredData = await res.json();
-            setRow(filteredData.data);
+            if (!docType) {
+                const res = await fetch(`http://13.233.238.2:4000/view_demo?category=${event.target.value}`);
+                const filteredData = await res.json();
+                setRow(filteredData.data);
+            } else {
+                const filteredData = row.filter((item) => item.category === event.target.value);
+                const advanceFilteredData = filteredData.filter((item) => item.type === docType);
+                setRow(advanceFilteredData);
+            }
             setIsLoading(false);
         } catch (e) {
             console.log(e);
@@ -115,16 +122,71 @@ function SearchFilePage() {
     // const handleSearch = (event) => {
     //     const searchTerm = event.target.value;
     //     setSearchTerm(searchTerm);
-        
+
     //     const tempRow=row;
-        
+
     //     const searchFilter = tempRow.filter((item) => {
     //       return item.name.toLowerCase().includes(searchTerm.toLowerCase());
     //     });
-      
-        
+
+
     //     setRow(searchFilter);
     //   };
+
+    const typeFilter = async (event) => {
+        setIsLoading(true);
+        if (event.target.value === '') {
+            setDocType(event.target.value);
+            if(!category){
+                getData();
+            }else{
+                console.log(selectedTypeRow)
+                setRow(selectedTypeRow);
+            }
+            setIsLoading(false);
+            return;
+            
+        }
+        if (event.target.value === docType) {
+            setIsLoading(false);
+            return;
+        }
+        try {
+            console.log('in try method')
+            setDocType(event.target.value);
+            console.log('category')
+            if(category===''){
+                console.log('in the typefilter try')
+                const res = await fetch(`http://13.233.238.2:4000/view_demo?type=${event.target.value}`);
+                const filteredData = await res.json();
+                if(!filteredData.data){
+                    setIsLoading(false);
+                    setRow([]);
+                    return;
+                }
+                setRow(filteredData.data);
+                setIsLoading(false);
+            }else{
+                if(selectedTypeRow.length===0){
+                    console.log('in seleted type row')
+                    const filteredData=row.filter((item)=>item.category===category);
+                    setSelectedTypeRow(filteredData);
+                    const advanceFilteredData=filteredData.filter((item)=>item.type===event.target.value);
+                    setRow(advanceFilteredData);
+                }else{
+                    console.log('not in selected type row')
+                    console.log(selectedTypeRow);
+                    const selectedTypeRowFiltered=selectedTypeRow.filter((item)=>item.type===event.target.value);
+                    const advanceFilteredData=selectedTypeRowFiltered.filter((item)=>item.category===category);
+                    setRow(advanceFilteredData);
+                }
+            }
+            setIsLoading(false);
+        } catch (e) {
+            console.log(e);
+            setIsLoading(false);
+        }
+    }
     return (
         <Box className='flex flex-1'>
             <Box className='w-[90%] mx-auto h-[80%] self-center pb-2'>
@@ -140,7 +202,7 @@ function SearchFilePage() {
                         </select>
                     </Box>
                     <Box >
-                        <select id="doc.type" value={docType} className="h-12 rounded-md px-4" onChange={(event) => setDocType(event.target.value)}>
+                        <select id="doc.type" value={docType} className="h-12 rounded-md px-4" onChange={typeFilter}>
                             <option value='' selected className='capitalize'>Doc. type</option>
                             <option value='pdf'>Pdf</option>
                             <option value='jpg'>jpg</option>
@@ -158,8 +220,8 @@ function SearchFilePage() {
                                 placeholder="Search…"
                                 inputProps={{ 'aria-label': 'search' }}
                                 className='h-12'
-                               value={searchTerm}
-                               onChange={(event)=>{setSearchTerm(event.target.value)}}
+                                value={searchTerm}
+                                onChange={(event) => { setSearchTerm(event.target.value) }}
                             />
                         </Search>
                     </Box>
@@ -175,8 +237,8 @@ function SearchFilePage() {
                         </TableHead>
                         <TableBody className='h-full w-full'>
 
-                            {row && row.length > 0 && !isLoading && row.filter((item)=>{
-                            return searchTerm.toLowerCase()===''?item: item.name.toLowerCase().includes(searchTerm);
+                            {row && row.length > 0 && !isLoading && row.filter((item) => {
+                                return searchTerm.toLowerCase() === '' ? item : item.name.toLowerCase().includes(searchTerm);
                             }).map((item, i) => (
                                 <TableRow key={i} sx={{ display: 'table-row', height: '50px', boxSizing: 'border-box' }} className='box-border h-10'>
                                     <TableCell align='center'>
@@ -189,14 +251,14 @@ function SearchFilePage() {
                                     <TableCell align='center'>{item.user_name}</TableCell>
                                 </TableRow>
                             ))}
-                            {(row.length === 0 || !row) && <TableRow className='w-full h-full' sx={{ border: 'none' }}>
+                            {((row.length === 0 || !row) && !isLoading) && <TableRow className='w-full h-full' sx={{ border: 'none' }}>
                                 <TableCell colSpan={columns.length}>
                                     <p className='text-center'>No rows</p>
                                 </TableCell>
                             </TableRow>}
                             {isLoading && <TableRow className='w-full h-full' sx={{ border: 'none' }}>
                                 <TableCell colSpan={columns.length} className='bg-slate-200'>
-                                    <Box  className='flex flex-col items-center justify-center h-full'>
+                                    <Box className='flex flex-col items-center justify-center h-full'>
                                         <svg aria-hidden="true" className="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
                                             <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />

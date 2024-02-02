@@ -5,6 +5,7 @@ import UploadFileRoundedIcon from '@mui/icons-material/UploadFileRounded';
 import SearchIcon from '@mui/icons-material/Search';
 import WindowIcon from '@mui/icons-material/Window';
 import LogoutIcon from '@mui/icons-material/Logout';
+import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay';
 
 function SideDrawer() {
   const navigate=useNavigate();
@@ -24,7 +25,7 @@ function SideDrawer() {
             <h3 className="capitalize">Search document</h3>
             </Box>
             <Box className='flex items-center content-center gap-2 p-3 hover:bg-slate-300 hover:cursor-pointer active:bg-slate-400 rounded-md'>
-            <WindowIcon/>
+            <PlaylistPlayIcon/>
             <h3 className="capitalize">View Playlist</h3>
             </Box>
           </Box>
