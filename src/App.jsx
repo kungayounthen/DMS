@@ -8,6 +8,7 @@ import UploadPage from './screens/UploadPage/UploadPage.jsx';
 import SearchFilePage from './screens/searchFilePage/SearchFilePage.jsx';
 import Main from './screens/Main/Main.jsx';
 import Practice from './screens/practice.jsx';
+import Nothing from './screens/Nothing/Nothing.jsx';
 function App() {
 
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path='upload' element={<SideDrawer/>}>
         <Route index element={<UploadPage/>}/>
         <Route path='search' element={<SearchFilePage/>}/>
+        <Route path='empty' element={<Nothing/>}/>
         </Route>
         <Route path='/letsgo' element={<Practice/>}/>
       </Route>

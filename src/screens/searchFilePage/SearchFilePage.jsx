@@ -49,9 +49,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const selectIcon = (icon) => {
     switch (icon) {
         case 'jpg':
-        case 'png': return <InsertPhotoIcon />
-        case 'mp4': return <VideocamIcon />
-        case 'pdf': return <PictureAsPdfIcon />
+        case 'png': return <InsertPhotoIcon style={{ color: 'green' }} />
+        case 'mp4': return <VideocamIcon  style={{color:'blue'}}/>
+        case 'pdf': return <PictureAsPdfIcon style={{ color: 'red' }} />
         default: return <QuestionMarkIcon />
     }
 }
@@ -64,7 +64,7 @@ function SearchFilePage() {
     const [row, setRow] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
-    const [selectedTypeRow,setSelectedTypeRow]=useState([]);
+    const [selectedTypeRow, setSelectedTypeRow] = useState([]);
 
     useEffect(() => {
         getData();
@@ -137,15 +137,15 @@ function SearchFilePage() {
         setIsLoading(true);
         if (event.target.value === '') {
             setDocType(event.target.value);
-            if(!category){
+            if (!category) {
                 getData();
-            }else{
+            } else {
                 console.log(selectedTypeRow)
                 setRow(selectedTypeRow);
             }
             setIsLoading(false);
             return;
-            
+
         }
         if (event.target.value === docType) {
             setIsLoading(false);
@@ -155,29 +155,29 @@ function SearchFilePage() {
             console.log('in try method')
             setDocType(event.target.value);
             console.log('category')
-            if(category===''){
+            if (category === '') {
                 console.log('in the typefilter try')
                 const res = await fetch(`http://13.233.238.2:4000/view_demo?type=${event.target.value}`);
                 const filteredData = await res.json();
-                if(!filteredData.data){
+                if (!filteredData.data) {
                     setIsLoading(false);
                     setRow([]);
                     return;
                 }
                 setRow(filteredData.data);
                 setIsLoading(false);
-            }else{
-                if(selectedTypeRow.length===0){
+            } else {
+                if (selectedTypeRow.length === 0) {
                     console.log('in seleted type row')
-                    const filteredData=row.filter((item)=>item.category===category);
+                    const filteredData = row.filter((item) => item.category === category);
                     setSelectedTypeRow(filteredData);
-                    const advanceFilteredData=filteredData.filter((item)=>item.type===event.target.value);
+                    const advanceFilteredData = filteredData.filter((item) => item.type === event.target.value);
                     setRow(advanceFilteredData);
-                }else{
+                } else {
                     console.log('not in selected type row')
                     console.log(selectedTypeRow);
-                    const selectedTypeRowFiltered=selectedTypeRow.filter((item)=>item.type===event.target.value);
-                    const advanceFilteredData=selectedTypeRowFiltered.filter((item)=>item.category===category);
+                    const selectedTypeRowFiltered = selectedTypeRow.filter((item) => item.type === event.target.value);
+                    const advanceFilteredData = selectedTypeRowFiltered.filter((item) => item.category === category);
                     setRow(advanceFilteredData);
                 }
             }
