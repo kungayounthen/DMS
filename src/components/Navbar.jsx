@@ -15,7 +15,8 @@ import Button from '@mui/material/Button';
 import React, { useContext } from "react";
 import { Outlet } from 'react-router-dom';
 import { CreadentialsContext } from '../context/credential';
-
+import logo from '../assets/logo.png'
+import zIndex from '@mui/material/styles/zIndex';
 const drawerWidth = 240;
 const navItems = ['Home', 'About Us', 'Events', 'Contacts'];
 
@@ -48,7 +49,7 @@ function Navbar() {
 
   return (
     <>
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: 'flex', }}>
         <CssBaseline />
         <AppBar position='fixed' component="nav" sx={{ backgroundColor: 'transparent', boxShadow: 'none', }} className='bg-transparent'>
           <Toolbar className='justify-center bg-transparent relative mx-5'>
@@ -61,6 +62,7 @@ function Navbar() {
               <MenuIcon />
             </IconButton>
             <Box sx={{ display: { xs: 'none', sm: 'flex' }, gap: 8 }} >
+              <img src={logo} alt="logo" style={{ zIndex: 5, position: 'absolute', left: 0, }} className='w-10 aspect-square rounded-full' />
               {navItems.map((item) => (
                 <Button key={item} sx={{ color: '#000', fontWeight: 'semi-bold' }}>
                   {item}
@@ -68,12 +70,12 @@ function Navbar() {
               ))}
             </Box>
             {name && <Box className='absolute right-0 flex items-center gap-1  bg-white px-2 rounded-full h-10'>
-            <Box className=' px-5 border border-slate-400 rounded-full'><h3 className='text-black text-center font-semibold text-md'>{name}</h3></Box>
-            <Box>
-            <img src='https://images.unsplash.com/photo-1586796676774-c93004ae009f?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' className='w-8 aspect-square rounded-full'/>
-            </Box>
-          </Box>}
-            
+              <Box className=' px-5 border border-slate-400 rounded-full'><h3 className='text-black text-center font-semibold text-md'>{name}</h3></Box>
+              <Box>
+                <img src='https://images.unsplash.com/photo-1586796676774-c93004ae009f?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' className='w-8 aspect-square rounded-full' />
+              </Box>
+            </Box>}
+
           </Toolbar>
         </AppBar>
         <nav>

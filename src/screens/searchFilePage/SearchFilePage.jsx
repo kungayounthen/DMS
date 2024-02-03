@@ -50,8 +50,9 @@ const selectIcon = (icon) => {
     switch (icon) {
         case 'jpg':
         case 'png': return <InsertPhotoIcon style={{ color: 'green' }} />
-        case 'mp4': return <VideocamIcon  style={{color:'blue'}}/>
+        case 'mp4': return <VideocamIcon style={{ color: 'blue' }} />
         case 'pdf': return <PictureAsPdfIcon style={{ color: 'red' }} />
+        case 'mp3': return <PictureAsPdfIcon style={{ color: 'purple' }} />
         default: return <QuestionMarkIcon />
     }
 }
@@ -187,6 +188,9 @@ function SearchFilePage() {
             setIsLoading(false);
         }
     }
+    const handleIconClick = (url) => {
+        window.open(url, "_blank");
+    };
     return (
         <Box className='flex flex-1'>
             <Box className='w-[90%] mx-auto h-[80%] self-center pb-2'>
@@ -242,7 +246,7 @@ function SearchFilePage() {
                             }).map((item, i) => (
                                 <TableRow key={i} sx={{ display: 'table-row', height: '50px', boxSizing: 'border-box' }} className='box-border h-10'>
                                     <TableCell align='center'>
-                                        <Box className='flex flex-col justify-center items-center'>{selectIcon(item.type)} <p>{item.type}</p></Box>
+                                        <Box className='flex flex-col justify-center items-center hover:cursor-pointer' onClick={() => handleIconClick(item.url)}>{selectIcon(item.type)} <p>{item.type}</p></Box>
                                     </TableCell>
                                     <TableCell align='center'>{item.name}</TableCell>
                                     <TableCell align='center'>{'#' + item.number}</TableCell>

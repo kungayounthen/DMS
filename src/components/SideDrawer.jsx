@@ -24,7 +24,7 @@ function SideDrawer() {
     <>
       <Box className="flex  uploadContainer ">
         <Box className="flex flex-col h-[95%] w-1/5 transparent ml-5 my-auto rounded-md p-3 border shadow-lg shadow-slate-500" component='main'>
-          <h3 className="text-center capitalize font-bold text-lg my-5 text-purple-500" style={{ fontFamily: 'Lato' }}>Document <br /> management</h3>
+          <h3 className="text-center font-bold text-lg my-5 text-purple-500" style={{ fontFamily: 'Lato' }}>docuTrack PRO</h3>
           <Divider className="w-full self-center" />
           <Box className="grid gap-3 my-5 ml-4">
             <Box className={`flex items-center content-center gap-2 hover:bg-slate-300 hover:cursor-pointer active:bg-slate-400 rounded-md p-3 ${activeButton === 'upload' ? 'bg-slate-300' : ''}`} onClick={() => { handleButtonClick('upload'); navigate('/upload') }}>

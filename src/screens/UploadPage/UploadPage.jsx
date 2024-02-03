@@ -23,7 +23,7 @@ function UploadPage() {
     event.preventDefault();
     setIsDragging(false);
     console.log(event.dataTransfer.files)
-    let validExtensions = ['image/jpg', 'image/png', 'video/mp4', 'application/pdf'];
+    let validExtensions = ['image/jpg', 'image/png', 'video/mp4', 'application/pdf','audio/mp3'];
     let data = event.dataTransfer.files[0];
     for (let i = 0; i < data.length; i++) {
       if (!validExtensions.includes(data[i].type)) {
@@ -49,7 +49,7 @@ function UploadPage() {
 
   const handleUpload = async () => {
     setIsLoading(true);
-    let validExtensions = ['image/jpg', 'image/png', 'video/mp4', 'application/pdf'];
+    let validExtensions = ['image/jpg', 'image/png', 'video/mp4', 'application/pdf','audio/mp3'];
     if (!category || !number || !name || !file) {
       alert('please  fill all fields');
       setIsLoading(false);
@@ -158,7 +158,7 @@ function UploadPage() {
                   </Box> :
                   <span className="capitalize text-center">Release the document</span>
                 }
-                <span className="block text-center text-sm text-slate-400">Supports:JPG,MP-3,MP-4 files</span>
+                <span className="block text-center text-sm text-slate-400">Supports:JPG,MP-3,MP-4,PNG files</span>
                 <input type="file" ref={fileInputRef} name="image" multiple className="hidden" onChange={handleBrowse} />
               </Box>
             </Box>
