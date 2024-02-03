@@ -143,8 +143,8 @@ function UploadPage() {
             </Box>
 
             <Box className='flex flex-col flex-1'>
-              <label htmlFor="date">Upload date*</label>
-              <input type="date" id="date" className="h-12 rounded-md pl-4" />
+              <label htmlFor="date">Document Version*</label>
+              <input type="text" id="date" className="h-12 rounded-md pl-4" />
             </Box>
           </Box>
           <div className={`w-full bg-white mt-5 rounded-md border-2  py-3 ${isDragging ? 'active:border-solid border-lime-300' : 'border-dashed border-slate-400'}`} onDragOver={handleDragOver} onDrop={onFileDrop} onDragLeave={handleDragOut} onDrag>
